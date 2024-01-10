@@ -8,7 +8,7 @@
 
 register_asset 'stylesheets/deadline.scss'
 
-after_initialize do # rubocop:disable Metrics/BlockLength
+after_initialize do
     Topic.register_custom_field_type('deadline_timestamp', :datetime)
     TopicList.preloaded_custom_fields << 'deadline_timestamp' if TopicList.respond_to? :preloaded_custom_fields
 
