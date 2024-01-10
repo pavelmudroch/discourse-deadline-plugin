@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 # name: discourse-topic-deadline
 # about: Simple plugin to add a deadline to a topic
 # version: 0.1.0
 # authors: Pavel Mudroch
 # url: https://github.com/pavelmudroch/discourse-deadline-plugin
 
-register_asset "stylesheets/deadline.scss"
+register_asset 'stylesheets/deadline.scss'
 
-after_initialize do
+after_initialize do # rubocop:disable Metrics/BlockLength
     Topic.register_custom_field_type('deadline_timestamp', :datetime)
     TopicList.preloaded_custom_fields << 'deadline_timestamp' if TopicList.respond_to? :preloaded_custom_fields
 
-    DiscourseEvent.on(:topic_created) do |topic, params, user|
+    DiscourseEvent.on(:topic_created) do |topic, params, _user|
       if params[:deadline_timestamp]
         topic.custom_fields['deadline_timestamp'] = params[:deadline_timestamp]
         topic.save
@@ -20,25 +22,26 @@ after_initialize do
     register_topic_custom_field_type('deadline_timestamp', :datetime)
 
     add_to_serializer(:topic_view, :deadline_timestamp) do
-        object.topic.custom_fields['deadline_timestamp']
+      object.topic.custom_fields['deadline_timestamp']
     end
 
     add_to_serializer(:topic_list_item, :deadline_timestamp) do
-        object.custom_fields['deadline_timestamp']
+      object.custom_fields['deadline_timestamp']
     end
 
     module ::DiscourseTopicDeadline
-        class Engine < ::Rails::Engine
-          engine_name "discourse_topic_deadline"
-          isolate_namespace DiscourseTopicDeadline
-        end
+      class Engine < ::Rails::Engine
+        engine_name 'discourse_topic_deadline'
+        isolate_namespace DiscourseTopicDeadline
       end
-
-    DiscourseTopicDeadline::Engine.routes.draw do
-        put "/topics/:id" => "topics#update"
     end
 
-    class DiscourseTopicDeadline::TopicsController < ::ApplicationController
+    DiscourseTopicDeadline::Engine.routes.draw do
+      put '/topics/:id' => 'topics#update'
+    end
+
+    module DiscourseTopicDeadline
+      class TopicsController < ::ApplicationController
         requires_plugin 'discourse-topic-deadline'
 
         def update
@@ -49,9 +52,9 @@ after_initialize do
           render json: success_json
         end
       end
+    end
 
-      Discourse::Application.routes.append do
-        mount ::DiscourseTopicDeadline::Engine, at: "/discourse-topic-deadline"
-      end
-
-  end
+    Discourse::Application.routes.append do
+      mount ::DiscourseTopicDeadline::Engine, at: '/discourse-topic-deadline'
+    end
+end
