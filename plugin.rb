@@ -40,21 +40,17 @@ after_initialize do
       put '/topics/:id' => 'topics#update'
     end
 
-    module DiscourseTopicDeadline
+    require_dependency "application_controller"
 
-      require_dependency "application_controller"
-
-      class TopicsController < ::ApplicationController
-        requires_plugin 'discourse-topic-deadline'
+    class DiscourseTopicDeadline::TopicsController < ::ApplicationController
 
         def update
-          topic = Topic.find(params[:id])
-          deadline_timestamp = params[:custom_fields][:deadline_timestamp]
-          topic.custom_fields['deadline_timestamp'] = deadline_timestamp
-          topic.save
-          render json: success_json
+            topic = Topic.find(params[:id])
+            deadline_timestamp = params[:custom_fields][:deadline_timestamp]
+            topic.custom_fields['deadline_timestamp'] = deadline_timestamp
+            topic.save
+            render json: success_json
         end
-      end
     end
 
     Discourse::Application.routes.append do
