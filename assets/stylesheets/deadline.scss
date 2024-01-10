@@ -1,0 +1,63 @@
+.topic-deadline {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    gap: 0.5em;
+    border-left: solid 0.3em;
+    padding: 0 0.5em;
+    font-size: 1.2em;
+    line-height: 1.8em;
+    font-weight: bold;
+    background-color: var(--primary-low);
+    color: var(--secondary-low);
+
+    svg {
+        order: 0;
+        height: 1em;
+        width: 1em;
+        fill: currentColor;
+    }
+
+    .deadline-date {
+        order: 1;
+        flex-grow: 2;
+        width: 100%;
+        display: block;
+    }
+
+    .deadline-time {
+        order: 2;
+    }
+}
+
+.deadline-far {
+    color: var(--secondary-low);
+}
+
+.deadline-soon {
+    color: var(--bronze);
+}
+
+.deadline-today {
+    color: var(--danger);
+}
+
+.deadline-expired {
+    color: var(--danger);
+    background-color: var(--danger-low);
+}
+
+.topic-closed-deadline {
+    color: var(--secondary-low) !important;
+    background-color: transparent !important;
+}
+
+.topic-deadline-date {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 0.1em 0.8em;
+    border-radius: 0.3em;
+    border: solid 1px;
+}
