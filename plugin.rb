@@ -41,6 +41,9 @@ after_initialize do
     end
 
     module DiscourseTopicDeadline
+
+      require_dependency "application_controller"
+
       class TopicsController < ::ApplicationController
         requires_plugin 'discourse-topic-deadline'
 
