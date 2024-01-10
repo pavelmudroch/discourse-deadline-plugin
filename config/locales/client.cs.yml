@@ -1,0 +1,19 @@
+cs:
+    js:
+        deadline:
+            title: 'Deadline'
+            set_button_title: 'otevře okno pro nastavení nebo změnu deadlinu příspěvku'
+            set_button_label: 'Deadline'
+            notifications:
+                title: 'deadline pro splnění úkolu'
+            set_deadline:
+                title: 'Nastavtavení datumu deadlinu'
+                invalid_date: 'Datum pro deadline nesmí být starší než dnes.'
+                instructions: 'Zvolte nové datum pro deadline úkolu.'
+                action: 'Nastavit deadline'
+                saving: 'Ukládám'
+            date:
+                today: 'dnes'
+                tomorrow: 'zítra'
+                day_after_tomorrow: 'pozítří'
+                yesterday: 'včera'
