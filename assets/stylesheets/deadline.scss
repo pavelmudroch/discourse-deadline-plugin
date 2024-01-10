@@ -50,14 +50,18 @@
 
 .topic-closed-deadline {
     color: var(--secondary-low) !important;
-    background-color: transparent !important;
+    background-color: none !important;
+
+    &.topic-deadline {
+        background-color: var(--primary-low) !important;
+    }
 }
 
 .topic-deadline-date {
     display: inline-block;
     font-weight: bold;
     font-size: 0.8em;
-    padding: 0.1em 0.8em;
+    padding: 0 0.8em;
     border-radius: 0.3em;
     border: solid 1px;
 }

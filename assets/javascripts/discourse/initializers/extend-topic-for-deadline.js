@@ -59,12 +59,15 @@ function addPostDeadlineExcerpt(api) {
             const deadlineColorClass = getDeadlineColorClassByRemainingDays(
                 deadlineRemainingDays,
             );
+            const closedTopicClass = topic.closed
+                ? 'topic-closed-deadline'
+                : '';
 
             const deadlineDate = new Date(timestamp);
             const showDeadlineTime =
                 !isToEndOfTheDay(deadlineDate) && deadlineRemainingDays === 0;
             const deadlineExcerpt = `
-                <div class='topic-deadline code ${deadlineColorClass}' data-topic='${
+                <div class='topic-deadline code ${deadlineColorClass} ${closedTopicClass}' data-topic='${
                 topic.id
             }' title="${I18n.t('deadline.notifications.title')}">
                     <svg>
