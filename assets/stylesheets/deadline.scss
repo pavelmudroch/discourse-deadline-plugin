@@ -58,10 +58,11 @@
 }
 
 .topic-deadline-date {
-    display: inline-block;
     font-weight: bold;
     font-size: 0.8em;
     padding: 0 0.8em;
     border-radius: 0.3em;
     border: solid 1px;
+    float: right;
+    margin-left: 2em;
 }
