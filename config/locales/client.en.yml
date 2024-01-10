@@ -1,0 +1,19 @@
+cs:
+    js:
+        deadline:
+            title: 'Deadline'
+            set_button_title: 'open modal for setup or change deadline of topic'
+            set_button_label: 'Deadline'
+            notifications:
+                title: 'deadline to finish task'
+            set_deadline:
+                title: 'Set deadline date'
+                invalid_date: 'Deadlin date must be in future.'
+                instructions: 'Choose new deadline date.'
+                action: 'Set deadline'
+                saving: 'Saving'
+            date:
+                today: 'today'
+                tomorrow: 'tomorrow'
+                day_after_tomorrow: 'day after tomorrow'
+                yesterday: 'yesterday'
