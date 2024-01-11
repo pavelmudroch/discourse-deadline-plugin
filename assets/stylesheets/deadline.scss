@@ -29,40 +29,26 @@
     .deadline-time {
         order: 2;
     }
-}
 
-.deadline-far {
-    color: var(--secondary-low);
-}
+    // &.deadline-far {
+    //     color: var(--secondary-low);
+    // }
 
-.deadline-soon {
-    color: var(--bronze);
-}
+    // &.deadline-soon {
+    //     color: var(--bronze);
+    // }
 
-.deadline-today {
-    color: var(--danger);
-}
+    // &.deadline-today {
+    //     color: var(--danger);
+    // }
 
-.deadline-expired {
-    color: var(--danger);
-    background-color: var(--danger-low);
-}
+    // &.deadline-expired {
+    //     color: var(--danger);
+    //     background-color: var(--danger-low);
+    // }
 
-.topic-closed-deadline {
-    color: var(--secondary-low) !important;
-    background-color: none !important;
-
-    &.topic-deadline {
-        background-color: var(--primary-low) !important;
-    }
-}
-
-.topic-deadline-date {
-    font-weight: bold;
-    font-size: 0.8em;
-    padding: 0 0.8em;
-    border-radius: 0.3em;
-    border: solid 1px;
-    float: right;
-    margin-left: 2em;
+    // &.topic-closed-deadline {
+    //     color: var(--secondary-low) !important;
+    //     background-color: var(--primary-low) !important;
+    // }
 }
