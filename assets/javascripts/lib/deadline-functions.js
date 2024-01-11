@@ -9,11 +9,14 @@ export function getDeadlineRemainingDays(deadlineTimestamp) {
 }
 
 export function getDeadlineColorClassByRemainingDays(remainingDays) {
+    const soonDays = 2;
+    console.log('Site settings soonDays:', soonDays, typeof soonDays);
+
     if (remainingDays < 0) {
         return 'deadline-expired';
     } else if (remainingDays === 0) {
         return 'deadline-today';
-    } else if (remainingDays < 3) {
+    } else if (remainingDays <= soonDays) {
         return 'deadline-soon';
     } else {
         return 'deadline-far';

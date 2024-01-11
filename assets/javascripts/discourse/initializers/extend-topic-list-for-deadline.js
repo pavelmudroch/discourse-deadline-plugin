@@ -1,17 +1,34 @@
 import { scheduleOnce } from '@ember/runloop';
 import TopicListItem from 'discourse/components/topic-list-item';
+import { withPluginApi } from 'discourse/lib/plugin-api';
 import {
     getDeadlineRemainingDays,
     getDeadlineColorClassByRemainingDays,
     getDeadlineContent,
 } from '../../lib/deadline-functions';
+import { getSiteSettings } from '../../lib/get-site-settings';
 
 export default {
     name: 'extend-topic-list-item',
     initialize() {
+        const siteSettings = withPluginApi('1.0.0', (api) =>
+            getSiteSettings(api),
+        );
+        if (!siteSettings.deadlineEnabled) {
+            console.log('Deadline plugin is disabled.');
+            return;
+        }
+
         TopicListItem.reopen({
             didInsertElement() {
                 this._super(...arguments);
+                if (
+                    !siteSettings.allowDeadlineOnAllCategories &&
+                    !siteSettings.allowDeadlineOnCategories.includes(
+                        this.topic.category_id,
+                    )
+                )
+                    return;
 
                 scheduleOnce('afterRender', this, this.addCustomElement);
             },

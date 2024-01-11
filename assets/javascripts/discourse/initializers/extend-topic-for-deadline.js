@@ -8,28 +8,13 @@ import {
     getDeadlineColorClassByRemainingDays,
     getDeadlineContent,
 } from '../../lib/deadline-functions';
+import { getSiteSettings } from '../../lib/get-site-settings';
 
 async function showSetDeadlineModal() {
     const model = this.model;
     const modal = getOwner(this).lookup('service:modal');
     modal.show(DeadlineCalendar, {
         model,
-    });
-}
-
-function addSetDeadlineButton(api) {
-    api.attachWidgetAction('post', 'setDeadline', showSetDeadlineModal);
-    api.addPostMenuButton('deadline', (attrs) => {
-        if (attrs.post_number !== 1) return;
-
-        return {
-            action: 'setDeadline',
-            icon: 'calendar-alt',
-            className: 'set-deadline create',
-            title: 'deadline.set_button_title',
-            position: 'first',
-            label: 'deadline.set_button_label',
-        };
     });
 }
 
@@ -45,13 +30,35 @@ function isToEndOfTheDay(date) {
     return true;
 }
 
-function addPostDeadlineExcerpt(api) {
+function addPostDeadlineExcerpt(api, siteSettings) {
     api.decorateWidget('post-contents:before', (helper) => {
         if (helper.attrs.post_number === 1) {
             const postModel = helper.getModel();
             if (!postModel) return;
 
             const topic = postModel.topic;
+            if (
+                !siteSettings.allowDeadlineOnAllCategories &&
+                !siteSettings.allowDeadlineOnCategories.includes(
+                    topic.category_id,
+                )
+            )
+                return;
+
+            api.attachWidgetAction('post', 'setDeadline', showSetDeadlineModal);
+            api.addPostMenuButton('deadline', (attrs) => {
+                if (attrs.post_number !== 1) return;
+
+                return {
+                    action: 'setDeadline',
+                    icon: 'calendar-alt',
+                    className: 'set-deadline create',
+                    title: 'deadline.set_button_title',
+                    position: 'first',
+                    label: 'deadline.set_button_label',
+                };
+            });
+
             if (!topic.deadline_timestamp) return;
 
             const timestamp = parseInt(topic.deadline_timestamp);
@@ -103,10 +110,19 @@ function addPostDeadlineExcerpt(api) {
     });
 }
 
+function extendTopicForDeadline(api) {
+    const siteSettings = getSiteSettings(api);
+    if (!siteSettings.deadlineEnabled) {
+        console.log('Deadline plugin is disabled.');
+        return;
+    }
+
+    addPostDeadlineExcerpt(api, siteSettings);
+}
+
 export default {
-    name: 'extend-for-set-deadline-button',
+    name: 'extend-topic-for-deadline',
     initialize() {
-        withPluginApi('1.0.0', addPostDeadlineExcerpt);
-        withPluginApi('1.0.0', addSetDeadlineButton);
+        withPluginApi('1.0.0', extendTopicForDeadline);
     },
 };
