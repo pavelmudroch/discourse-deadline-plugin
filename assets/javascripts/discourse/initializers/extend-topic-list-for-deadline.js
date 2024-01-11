@@ -45,7 +45,6 @@ export default {
                     deadlineRemainingDays,
                 );
                 const topicDeadline = document.createElement('span');
-                const bottomLine = this.element.querySelector('.link-top-line');
                 const deadlineDate = new Date(deadlineTimestamp);
                 const deadlineContent =
                     getDeadlineContent(deadlineDate) ??
@@ -62,7 +61,8 @@ export default {
                     topicDeadline.classList.add('topic-closed-deadline');
 
                 topicDeadline.textContent = deadlineContent;
-                bottomLine.appendChild(topicDeadline);
+                const mainLink = this.element.querySelector('.main-link');
+                mainLink.appendChild(topicDeadline);
             },
         });
     },
