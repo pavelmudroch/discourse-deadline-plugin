@@ -4,4 +4,4 @@ en:
         allow_deadline_on_all_categories: 'Allow deadline plugin on all categories'
         allow_deadline_on_categories: 'Select categories where deadline plugin is allowed. `allow_deadline_on_all_categories` must be false.'
         auto_bump_topic_on_deadline_day: 'Automatically bump topic on deadline day'
-        deadline_soon_days: 'Number of days before deadline to mark as `deadline-soon`. Deadline is marked as `deadline-today` on deadline day, `deadline-expired` after deadline day and `deadline-far` before `deadline_soon_days` days.'
+        deadline_soon_days: 'Number of days before deadline to mark as `deadline-soon`'
