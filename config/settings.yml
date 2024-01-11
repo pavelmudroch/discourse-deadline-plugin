@@ -1,0 +1,17 @@
+plugins:
+    deadline_enabled:
+        default: true
+        client: true
+    allow_deadline_on_all_categories:
+        default: true
+        client: true
+    allow_deadline_on_categories:
+        default: ''
+        type: category_list
+        client: true
+    auto_bump_topic_on_deadline_day:
+        default: false
+        client: true
+    deadline_soon_days:
+        default: 2
+        client: true

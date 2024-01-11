@@ -6,6 +6,8 @@
 # authors: Pavel Mudroch
 # url: https://github.com/pavelmudroch/discourse-topic-deadline
 
+enabled_site_setting :deadline_enabled
+
 register_asset 'stylesheets/deadline.scss'
 
 after_initialize do
@@ -45,6 +47,17 @@ after_initialize do
     class DiscourseTopicDeadline::TopicsController < ::ApplicationController
 
         def update
+            if SiteSetting.allow_deadline_on_all_categories
+                unless guardian.can_edit?(topic)
+                    return render json: { error: 'You are not allowed to update this topic' }, status: 403
+                end
+            else
+                allowed_category_ids = SiteSetting.deadline_allowed_category_ids.split('|').map(&:to_i)
+                unless allowed_category_ids.include?(topic.category_id) && guardian.can_edit?(topic)
+                    return render json: { error: 'You are not allowed to update this topic' }, status: 403
+                end
+            end
+
             topic = Topic.find(params[:id])
             deadline_timestamp = params[:custom_fields][:deadline_timestamp]
             topic.custom_fields['deadline_timestamp'] = deadline_timestamp
