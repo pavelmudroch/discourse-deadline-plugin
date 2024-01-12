@@ -62,7 +62,7 @@ export default {
                 if (this.topic.closed)
                     topicDeadline.classList.add('topic-closed-deadline');
 
-                topicDeadline.textContent = deadlineContent;
+                topicDeadline.innerHTML = `<svg style="fill: currentColor;" class="d-icon svg-icon"><use href="#far-clock"></use></svg>${deadlineContent}`;
                 const mainLink = this.element.querySelector('.main-link');
                 mainLink.appendChild(topicDeadline);
             },
