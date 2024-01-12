@@ -13,3 +13,5 @@ plugins:
     deadline_soon_days_threshold:
         default: 2
         client: true
+        min: 0
+        max: 30

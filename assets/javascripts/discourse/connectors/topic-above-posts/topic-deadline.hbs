@@ -1,12 +1,22 @@
 {{#if this.shouldRender}}
     <div>
         {{#if this.hasDeadline}}
-            <div>Deadline</div>
-        {{else}}
-            <DButton title={{i18n 'deadline.set_button.title'}}>
-                {{d-icon 'calendar-alt'}}
-                {{!-- {{d-button-label i18n 'deadline.set_button.label'}} --}}
+            <DButton
+                style={{htmlSafe this.style}}
+                @icon='calendar-alt'
+                @class='deadline-button'
+                @label='deadline.change_button.label'
+                @title='deadline.change_button.title'
+            >
+                <div class='button-content'>{{this.deadlineFormatted}}</div>
             </DButton>
+        {{else}}
+            <DButton
+                @icon='calendar-alt'
+                @class='deadline-button'
+                @label='deadline.set_button.label'
+                @title='deadline.set_button.title'
+            />
         {{/if}}
     </div>
 {{/if}}

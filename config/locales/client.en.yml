@@ -1,6 +1,17 @@
 en:
     js:
         deadline:
+            date_locales: 'en-US'
+            date:
+                day_after_tomorrow: 'Day after tomorrow'
+                tomorrow: 'Tomorrow'
+                today: 'Today'
+                yesterday: 'Yesterday'
+                expired: 'Expired'
             set_button:
                 title: 'set deadline date for this topic'
                 label: 'Set Deadline'
+            change_button:
+                title: 'change deadline date for this topic'
+                label: 'Deadline:'
+                error_label: 'Cannot parse deadline date'
