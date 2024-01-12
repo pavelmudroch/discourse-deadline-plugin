@@ -2,16 +2,14 @@ plugins:
     deadline_enabled:
         default: true
         client: true
-    allow_deadline_on_all_categories:
-        default: true
-        client: true
-    allow_deadline_on_categories:
+    deadline_allowed_on_categories:
         default: ''
         type: category_list
         client: true
-    auto_bump_topic_on_deadline_day:
+    deadline_auto_bump_topic:
         default: false
-        client: true
-    deadline_soon_days:
+    deadline_auto_bump_topic_threshold:
+        default: 2
+    deadline_soon_days_threshold:
         default: 2
         client: true

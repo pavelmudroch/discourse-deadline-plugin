@@ -1,0 +1,12 @@
+{{#if this.shouldRender}}
+    <div>
+        {{#if this.hasDeadline}}
+            <div>Deadline</div>
+        {{else}}
+            <DButton title={{i18n 'deadline.set_button.title'}}>
+                {{d-icon 'calendar-alt'}}
+                {{!-- {{d-button-label i18n 'deadline.set_button.label'}} --}}
+            </DButton>
+        {{/if}}
+    </div>
+{{/if}}
