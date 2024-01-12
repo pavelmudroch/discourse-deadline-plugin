@@ -8,21 +8,6 @@ export function getDeadlineRemainingDays(deadlineTimestamp) {
     return remainingDays;
 }
 
-export function getDeadlineColorClassByRemainingDays(remainingDays) {
-    const soonDays = 2;
-    console.log('Site settings soonDays:', soonDays, typeof soonDays);
-
-    if (remainingDays < 0) {
-        return 'deadline-expired';
-    } else if (remainingDays === 0) {
-        return 'deadline-today';
-    } else if (remainingDays <= soonDays) {
-        return 'deadline-soon';
-    } else {
-        return 'deadline-far';
-    }
-}
-
 export function getDeadlineContent(deadlineDate) {
     const now = new Date();
 
@@ -42,4 +27,16 @@ export function getDeadlineContent(deadlineDate) {
     }
 
     return null;
+}
+
+export function getDeadlineClassByRemainingDays(remainingDays, siteSettings) {
+    if (remainingDays < 0) {
+        return 'deadline-expired';
+    } else if (remainingDays === 0) {
+        return 'deadline-today';
+    } else if (remainingDays <= siteSettings.deadlineSoonDays) {
+        return 'deadline-soon';
+    } else {
+        return 'deadline-far';
+    }
 }

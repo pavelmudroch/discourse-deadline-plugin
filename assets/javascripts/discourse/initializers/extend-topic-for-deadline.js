@@ -5,10 +5,31 @@ import DeadlineCalendar from '../components/modal/deadline-calendar';
 import { getOwner } from '@ember/application';
 import {
     getDeadlineRemainingDays,
-    getDeadlineColorClassByRemainingDays,
     getDeadlineContent,
+    getDeadlineClassByRemainingDays,
 } from '../../lib/deadline-functions';
 import { getSiteSettings } from '../../lib/get-site-settings';
+
+function getDeadlineStyleByRemainingDays(remainingDays) {
+    const cssClass = getDeadlineClassByRemainingDays(remainingDays);
+    const helperElement = document.createElement('span');
+    helperElement.classList.add(cssClass);
+    helperElement.style.visibility = 'hidden';
+    document.body.appendChild(helperElement);
+
+    const style = window.getComputedStyle(helperElement);
+    const color = style.getPropertyValue('color');
+    const backgroundColor = style.getPropertyValue('background-color');
+    helperElement.remove();
+    const colorStyleString =
+        color === 'rgba(0, 0, 0, 0)' ? '' : `color: ${color};`;
+    const backgroundColorStyleString =
+        backgroundColor === 'rgba(0, 0, 0, 0)'
+            ? ''
+            : `background-color: ${backgroundColor};`;
+
+    return colorStyleString + backgroundColorStyleString;
+}
 
 async function showSetDeadlineModal() {
     const model = this.model;
@@ -63,7 +84,7 @@ function addPostDeadlineExcerpt(api, siteSettings) {
 
             const timestamp = parseInt(topic.deadline_timestamp);
             const deadlineRemainingDays = getDeadlineRemainingDays(timestamp);
-            const deadlineColorClass = getDeadlineColorClassByRemainingDays(
+            const deadlineStyle = getDeadlineStyleByRemainingDays(
                 deadlineRemainingDays,
             );
             const closedTopicClass = topic.closed
@@ -74,9 +95,11 @@ function addPostDeadlineExcerpt(api, siteSettings) {
             const showDeadlineTime =
                 !isToEndOfTheDay(deadlineDate) && deadlineRemainingDays === 0;
             const deadlineExcerpt = `
-                <div class='topic-deadline code ${deadlineColorClass} ${closedTopicClass}' data-topic='${
+                <div class='topic-deadline code ${closedTopicClass}' data-topic='${
                 topic.id
-            }' title="${I18n.t('deadline.notifications.title')}">
+            }' style="${deadlineStyle}" title="${I18n.t(
+                'deadline.notifications.title',
+            )}">
                     <svg>
                         <use href='#calendar-alt'></use>
                     </svg>

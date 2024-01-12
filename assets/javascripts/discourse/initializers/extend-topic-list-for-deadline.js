@@ -3,8 +3,8 @@ import TopicListItem from 'discourse/components/topic-list-item';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import {
     getDeadlineRemainingDays,
-    getDeadlineColorClassByRemainingDays,
     getDeadlineContent,
+    getDeadlineClassByRemainingDays,
 } from '../../lib/deadline-functions';
 import { getSiteSettings } from '../../lib/get-site-settings';
 
@@ -41,8 +41,9 @@ export default {
                 );
                 const deadlineRemainingDays =
                     getDeadlineRemainingDays(deadlineTimestamp);
-                const deadlineColorClass = getDeadlineColorClassByRemainingDays(
+                const deadlineColorClass = getDeadlineClassByRemainingDays(
                     deadlineRemainingDays,
+                    siteSettings,
                 );
                 const topicDeadline = document.createElement('span');
                 const deadlineDate = new Date(deadlineTimestamp);
@@ -57,6 +58,7 @@ export default {
                     'topic-deadline-date',
                     deadlineColorClass,
                 );
+
                 if (this.topic.closed)
                     topicDeadline.classList.add('topic-closed-deadline');
 
