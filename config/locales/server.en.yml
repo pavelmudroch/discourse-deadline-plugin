@@ -5,3 +5,4 @@ en:
         deadline_auto_bump_topic: 'Automatically bump topic on each day less than threshold'
         deadline_auto_bump_topic_threshold: 'Number of days before deadline to bump topic'
         deadline_soon_days_threshold: 'Number of days before deadline to mark as `deadline-soon`'
+        deadline_display_on_closed_topic: 'Display deadline on closed topics'

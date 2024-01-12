@@ -1,12 +1,13 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { htmlSafe } from '@ember/template';
+import { action } from '@ember/object';
+import { getOwner } from '@ember/application';
 import { getDeadlineAllowedCategories } from '../../../lib/get-deadline-allowed-categories';
 import { getDeadlineRemainingDays } from '../../../lib/get-deadline-remaining-days';
 import { translateDeadlineRemainingDays } from '../../../lib/translate-deadline-remaining-days';
 import I18n from 'discourse-i18n';
 import { getDeadlineRemainingDaysClass } from '../../../lib/get-deadline-remaining-days-class';
+import DeadlineCalendar from '../../components/modal/deadline-calendar';
 
 function getDeadlineColorsFromClassName(className) {
     const temp = document.createElement('span');
@@ -83,14 +84,18 @@ export default class TopicDeadline extends Component {
         const {
             deadline_enabled: deadlineEnabled,
             deadline_allowed_on_categories: deadlineAllowedOnCategories,
+            deadline_display_on_closed_topic: deadlineDisplayOnClosedTopic,
         } = this.siteSettings;
         const categoryId = this.#topic.category_id;
         const deadlineAllowedCategories = getDeadlineAllowedCategories(
             deadlineAllowedOnCategories,
         );
+        const closedTopicDisplayDeadline =
+            !this.#topic.closed || deadlineDisplayOnClosedTopic;
 
         return (
             deadlineEnabled &&
+            closedTopicDisplayDeadline &&
             (deadlineAllowedCategories?.includes(categoryId) ?? true)
         );
     }
@@ -106,5 +111,13 @@ export default class TopicDeadline extends Component {
             this.#timestamp = parseInt(this.#topic.deadline_timestamp);
             this.#remainingDays = getDeadlineRemainingDays(this.#timestamp);
         }
+    }
+
+    @action
+    setDeadline() {
+        const modal = getOwner(this).lookup('service:modal');
+        modal.show(DeadlineCalendar, {
+            model: this.args.outletArgs.model,
+        });
     }
 }

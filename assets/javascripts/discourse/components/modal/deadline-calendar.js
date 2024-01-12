@@ -16,7 +16,7 @@ export default class SetDeadline extends Component {
 
     constructor() {
         super(...arguments);
-        const topic = this.args.model.topic;
+        const topic = this.args.model;
         const deadline = topic.deadline_timestamp;
 
         if (deadline) this.#setCurrentDateTimeFromDeadline(deadline);
@@ -39,8 +39,7 @@ export default class SetDeadline extends Component {
     async setDeadline() {
         if (this.time === '') this.time = '23:59';
 
-        const model = this.args.model;
-        const topic = model.topic;
+        const topic = this.args.model;
         const datetime = new Date(`${this.date} ${this.time}`).valueOf();
 
         this.saving = true;

@@ -15,3 +15,6 @@ plugins:
         client: true
         min: 0
         max: 30
+    deadline_display_on_closed_topic:
+        default: false
+        client: true

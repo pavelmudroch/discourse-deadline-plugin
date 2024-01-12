@@ -7,6 +7,7 @@
                 @class='deadline-button'
                 @label='deadline.change_button.label'
                 @title='deadline.change_button.title'
+                @action={{action this.setDeadline}}
             >
                 <div class='button-content'>{{this.deadlineFormatted}}</div>
             </DButton>
@@ -16,6 +17,7 @@
                 @class='deadline-button'
                 @label='deadline.set_button.label'
                 @title='deadline.set_button.title'
+                @action={{action this.setDeadline}}
             />
         {{/if}}
     </div>
