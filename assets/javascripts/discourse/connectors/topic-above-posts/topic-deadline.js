@@ -8,6 +8,8 @@ import { translateDeadlineRemainingDays } from '../../../lib/translate-deadline-
 import I18n from 'discourse-i18n';
 import { getDeadlineRemainingDaysClass } from '../../../lib/get-deadline-remaining-days-class';
 import DeadlineCalendar from '../../components/modal/deadline-calendar';
+import { tracked } from '@glimmer/tracking';
+import { ajax } from 'discourse/lib/ajax';
 
 function getDeadlineColorsFromClassName(className) {
     const temp = document.createElement('span');
@@ -31,6 +33,9 @@ function getDeadlineColorsFromClassName(className) {
 
 export default class TopicDeadline extends Component {
     @service siteSettings;
+    @service appEvents;
+    @tracked deadlineFormatted;
+    @tracked hasDeadline;
     #topic;
     #timestamp;
     #remainingDays;
@@ -53,7 +58,7 @@ export default class TopicDeadline extends Component {
         return [color ?? '', backgroundColor ?? ''].join('');
     }
 
-    get deadlineFormatted() {
+    get #deadlineFormatted() {
         const timestamp = this.deadlineTimestamp;
         if (timestamp === null) return I18n.t('deadline.change_button.error');
 
@@ -76,7 +81,7 @@ export default class TopicDeadline extends Component {
         return deadlineFormatted;
     }
 
-    get hasDeadline() {
+    get #hasDeadline() {
         return this.deadlineTimestamp !== null;
     }
 
@@ -107,7 +112,31 @@ export default class TopicDeadline extends Component {
     constructor() {
         super(...arguments);
 
-        this.#topic = this.args.outletArgs.model;
+        this.appEvents.on('deadline:changed', this, this.#update);
+        this.#init(this.args.outletArgs.model);
+        this.updateDeadline();
+    }
+
+    @action
+    setDeadline() {
+        const modal = getOwner(this).lookup('service:modal');
+        modal.show(DeadlineCalendar, {
+            model: this.args.outletArgs.model,
+        });
+    }
+
+    updateDeadline() {
+        this.deadlineFormatted = this.#deadlineFormatted;
+        this.hasDeadline = this.#hasDeadline;
+    }
+
+    willDestroy() {
+        super.willDestroy(...arguments);
+        this.appEvents.off('deadline:changed', this, this.#update);
+    }
+
+    #init(topic) {
+        this.#topic = topic;
         if (this.#topic.deadline_timestamp === null) {
             this.#timestamp = null;
             this.#remainingDays = null;
@@ -117,11 +146,9 @@ export default class TopicDeadline extends Component {
         }
     }
 
-    @action
-    setDeadline() {
-        const modal = getOwner(this).lookup('service:modal');
-        modal.show(DeadlineCalendar, {
-            model: this.args.outletArgs.model,
-        });
+    async #update() {
+        const topic = await ajax(`/t/${this.#topic.id}.json`);
+        this.#init(topic);
+        this.updateDeadline();
     }
 }

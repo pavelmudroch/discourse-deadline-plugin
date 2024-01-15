@@ -47,19 +47,20 @@ after_initialize do
     class DiscourseTopicDeadline::TopicsController < ::ApplicationController
 
         def update
+            topic = Topic.find(params[:id])
+
             unless guardian.can_edit?(topic)
                 return render json: { error: 'You are not allowed to update this topic' }, status: 403
             end
 
-            unless SiteSettings.deadline_allowed_on_categories.empty?
-                allowed_category_ids = SiteSettings.deadline_allowed_on_categories.split('|').map(&:to_i)
+            unless SiteSetting.deadline_allowed_on_categories.empty?
+                allowed_category_ids = SiteSetting.deadline_allowed_on_categories.split('|').map(&:to_i)
 
                 unless allowed_category_ids.include?(topic.category_id)
                     return render json: { error: 'Deadline plugin not enabled on this category'}, status: 500
                 end
             end
 
-            topic = Topic.find(params[:id])
             deadline_timestamp = params[:custom_fields][:deadline_timestamp]
             topic.custom_fields['deadline_timestamp'] = deadline_timestamp
             topic.save

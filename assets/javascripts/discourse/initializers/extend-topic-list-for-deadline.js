@@ -11,6 +11,7 @@ import { getSiteSettings } from '../../lib/get-site-settings';
 export default {
     name: 'extend-topic-list-item',
     initialize() {
+        console.log('Initializer: Deadline - extend-topic-list-item');
         const siteSettings = withPluginApi('1.0.0', (api) =>
             getSiteSettings(api),
         );
@@ -21,12 +22,16 @@ export default {
 
         TopicListItem.reopen({
             didInsertElement() {
+                console.log('TopicListItem didInsertElement :: extending');
                 this._super(...arguments);
                 const category = this.topic.category_id;
                 const closed = this.topic.closed;
                 const solved = this.topic.has_accepted_answer === true;
 
-                if (!siteSettings.deadlineAllowedCategories.includes(category))
+                if (
+                    siteSettings.deadlineAllowedCategories.length !== 0 &&
+                    !siteSettings.deadlineAllowedCategories.includes(category)
+                )
                     return;
 
                 if (!siteSettings.deadlineDisplayOnClosedTopic && closed)

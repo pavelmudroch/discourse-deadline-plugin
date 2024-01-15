@@ -21,3 +21,4 @@ cs:
                 invalid_date: 'Datum nesmí být starší než dnes!'
                 saving: 'Ukládám...'
                 action: 'Nastavit Deadline'
+                action_error: 'Nepodařilo se nastavit deadline'

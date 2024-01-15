@@ -21,3 +21,4 @@ en:
                 invalid_date: 'Picked date cannot be older than today!'
                 saving: 'Saving...'
                 action: 'Set Deadline'
+                action_error: 'Failed to set deadline'

@@ -1,6 +1,5 @@
 export function getSiteSettings(api) {
     const settings = api.container.lookup('site-settings:main');
-    console.log(settings);
     return {
         deadlineEnabled: settings.deadline_enabled,
         deadlineSoonDays: settings.deadline_soon_days,
