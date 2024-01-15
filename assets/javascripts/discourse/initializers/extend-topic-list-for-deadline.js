@@ -1,11 +1,9 @@
 import { scheduleOnce } from '@ember/runloop';
 import TopicListItem from 'discourse/components/topic-list-item';
 import { withPluginApi } from 'discourse/lib/plugin-api';
-import {
-    getDeadlineRemainingDays,
-    getDeadlineContent,
-    getDeadlineClassByRemainingDays,
-} from '../../lib/deadline-functions';
+import { translateDeadlineRemainingDays } from '../../lib/translate-deadline-remaining-days';
+import { getDeadlineRemainingDays } from '../../lib/get-deadline-remaining-days';
+import { getDeadlineRemainingDaysClass } from '../../lib/get-deadline-remaining-days-class';
 import { getSiteSettings } from '../../lib/get-site-settings';
 
 export default {
@@ -27,12 +25,12 @@ export default {
                 const category = this.topic.category_id;
                 const closed = this.topic.closed;
                 const solved = this.topic.has_accepted_answer === true;
+                const categoryIncluded =
+                    siteSettings.deadlineAllowedCategories?.includes(
+                        category,
+                    ) ?? true;
 
-                if (
-                    siteSettings.deadlineAllowedCategories.length !== 0 &&
-                    !siteSettings.deadlineAllowedCategories.includes(category)
-                )
-                    return;
+                if (!categoryIncluded) return;
 
                 if (!siteSettings.deadlineDisplayOnClosedTopic && closed)
                     return;
@@ -51,19 +49,26 @@ export default {
                 );
                 const deadlineRemainingDays =
                     getDeadlineRemainingDays(deadlineTimestamp);
-                const deadlineColorClass = getDeadlineClassByRemainingDays(
+                const deadlineColorClass = getDeadlineRemainingDaysClass(
                     deadlineRemainingDays,
-                    siteSettings,
+                    siteSettings.deadlineSoonDaysThreshold,
                 );
                 const topicDeadline = document.createElement('span');
                 const deadlineDate = new Date(deadlineTimestamp);
-                const deadlineContent =
-                    getDeadlineContent(deadlineDate) ??
-                    deadlineDate.toLocaleDateString('cs-CZ', {
+                const timestampFormatted = deadlineDate.toLocaleDateString(
+                    'cs-CZ',
+                    {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
-                    });
+                    },
+                );
+                const deadlineDayFormatted = translateDeadlineRemainingDays(
+                    deadlineRemainingDays,
+                );
+                const deadlineContent = `${
+                    deadlineDayFormatted?.concat(' - ') ?? ''
+                }${timestampFormatted}`;
                 topicDeadline.classList.add(
                     'topic-deadline-date',
                     deadlineColorClass,
