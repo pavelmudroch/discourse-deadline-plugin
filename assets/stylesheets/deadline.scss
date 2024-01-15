@@ -1,3 +1,19 @@
+.deadline-button {
+    position: sticky;
+    width: 100%;
+    justify-content: flex-start;
+    border-left: solid 0.3em;
+
+    svg {
+        color: currentColor !important;
+    }
+
+    .button-content {
+        margin-left: 0.45em;
+        font-weight: bold;
+    }
+}
+
 .topic-deadline {
     display: flex;
     justify-content: flex-start;
@@ -29,26 +45,4 @@
     .deadline-time {
         order: 2;
     }
-}
-
-.deadline-far {
-    color: var(--secondary-low);
-}
-
-.deadline-soon {
-    color: var(--bronze);
-}
-
-.deadline-today {
-    color: var(--danger);
-}
-
-.deadline-expired {
-    color: var(--danger);
-    background-color: var(--danger-low);
-}
-
-.topic-closed-deadline {
-    color: var(--secondary-low) !important;
-    background-color: var(--primary-low) !important;
 }

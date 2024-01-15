@@ -1,19 +1,23 @@
 en:
     js:
         deadline:
-            title: 'Deadline'
-            set_button_title: 'open modal for setup or change deadline of topic'
-            set_button_label: 'Deadline'
-            notifications:
-                title: 'deadline to finish task'
-            set_deadline:
-                title: 'Set deadline date'
-                invalid_date: 'Deadlin date must be in future.'
-                instructions: 'Choose new deadline date.'
-                action: 'Set deadline'
-                saving: 'Saving'
+            date_locales: 'en-US'
             date:
-                today: 'today'
-                tomorrow: 'tomorrow'
-                day_after_tomorrow: 'day after tomorrow'
-                yesterday: 'yesterday'
+                day_after_tomorrow: 'Day after tomorrow'
+                tomorrow: 'Tomorrow'
+                today: 'Today'
+                yesterday: 'Yesterday'
+                expired: 'Expired'
+            set_button:
+                title: 'set deadline date for this topic'
+                label: 'Set Deadline'
+            change_button:
+                title: 'change deadline date for this topic'
+                label: 'Deadline:'
+                error_label: 'Cannot parse deadline date'
+            calendar:
+                title: 'Deadline date'
+                instructions: 'Pick date for deadline from calendar.'
+                invalid_date: 'Picked date cannot be older than today!'
+                saving: 'Saving...'
+                action: 'Set Deadline'
