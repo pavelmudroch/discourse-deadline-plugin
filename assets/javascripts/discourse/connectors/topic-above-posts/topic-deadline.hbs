@@ -1,9 +1,9 @@
-{{#if this.shouldRender}}
+{{!-- {{#if this.shouldRender}}
     <div>
         {{#if this.hasDeadline}}
             <DButton
                 style={{htmlSafe this.style}}
-                @icon='calendar-alt'
+                @icon='far-clock'
                 @class='deadline-button'
                 @label='deadline.change_button.label'
                 @title='deadline.change_button.title'
@@ -13,7 +13,8 @@
             </DButton>
         {{else}}
             <DButton
-                @icon='calendar-alt'
+                style={{htmlSafe this.style}}
+                @icon='far-clock'
                 @class='deadline-button'
                 @label='deadline.set_button.label'
                 @title='deadline.set_button.title'
@@ -21,4 +22,27 @@
             />
         {{/if}}
     </div>
+{{/if}} --}}
+
+{{#if this.shouldRender}}
+    {{#if this.hasDeadline}}
+        <div
+            class='deadline-button'
+            {{on 'click' this.setDeadline}}
+            title={{i18n 'deadline.change_button.title'}}
+            style={{this.style}}
+        >
+            <svg><use href='#far-clock'></use></svg>
+            <span class='content'>{{this.deadlineFormatted}}</span>
+        </div>
+    {{else}}
+        <div
+            class='deadline-button'
+            {{on 'click' this.setDeadline}}
+            title={{i18n 'deadline.set_button.title'}}
+        >
+            <svg><use href='#far-clock'></use></svg>
+            <span class='content'>{{i18n 'deadline.set_button.label'}}</span>
+        </div>
+    {{/if}}
 {{/if}}

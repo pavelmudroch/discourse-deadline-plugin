@@ -14,7 +14,7 @@ import { ajax } from 'discourse/lib/ajax';
 function getDeadlineColorsFromClassName(className) {
     const temp = document.createElement('span');
     temp.style.visibility = 'hidden';
-    temp.classList.add(className);
+    temp.classList.add('topic-deadline-date', className);
     document.body.appendChild(temp);
     const style = window.getComputedStyle(temp);
     const colorStyle = style.color;
