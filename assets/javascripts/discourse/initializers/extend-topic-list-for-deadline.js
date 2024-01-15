@@ -21,8 +21,8 @@ export default {
         }
 
         TopicListItem.reopen({
-            didInsertElement() {
-                console.log('TopicListItem didInsertElement :: extending');
+            didReceiveAttrs() {
+                console.log('TopicListItem didReceiveAttrs :: extending');
                 this._super(...arguments);
                 const category = this.topic.category_id;
                 const closed = this.topic.closed;
