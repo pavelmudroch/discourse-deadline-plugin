@@ -5,26 +5,26 @@ import { next } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import DiscourseURL from 'discourse/lib/url';
 import I18n from 'discourse-i18n';
-import Topic from 'discourse/models/topic';
 import { ajax } from 'discourse/lib/ajax';
+import { inject as service } from '@ember/service';
 
 export default class SetDeadline extends Component {
+    @service siteSettings;
     @tracked saving = false;
     @tracked date = moment().format('YYYY-MM-DD');
-    @tracked time = '23:59';
     @tracked flash;
+    #time = '23:59';
 
     constructor() {
         super(...arguments);
-        const topic = this.args.model.topic;
+        const topic = this.args.model;
         const deadline = topic.deadline_timestamp;
 
         if (deadline) this.#setCurrentDateTimeFromDeadline(deadline);
     }
 
     get createdAt() {
-        const time = this.time === '' ? '23:59' : this.time;
-        return moment(`${this.date} ${time}`, 'YYYY-MM-DD HH:mm');
+        return moment(`${this.date} ${this.#time}`, 'YYYY-MM-DD HH:mm');
     }
 
     get validTimestamp() {
@@ -37,11 +37,8 @@ export default class SetDeadline extends Component {
 
     @action
     async setDeadline() {
-        if (this.time === '') this.time = '23:59';
-
-        const model = this.args.model;
-        const topic = model.topic;
-        const datetime = new Date(`${this.date} ${this.time}`).valueOf();
+        const topic = this.args.model;
+        const datetime = new Date(`${this.date} ${this.#time}`).valueOf();
 
         this.saving = true;
         try {
@@ -66,11 +63,11 @@ export default class SetDeadline extends Component {
     #setCurrentDateTimeFromDeadline(deadline) {
         const date = new Date(parseInt(deadline));
         this.date = date.toLocaleDateString('en-CA');
-        this.time = date.toLocaleTimeString('cs-CZ', {
-            hour12: false,
-            hourCycle: 'h23',
-            minute: '2-digit',
-            hour: '2-digit',
-        });
+        // this.#time = date.toLocaleTimeString('cs-CZ', {
+        //     hour12: false,
+        //     hourCycle: 'h23',
+        //     minute: '2-digit',
+        //     hour: '2-digit',
+        // });
     }
 }
