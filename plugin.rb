@@ -71,4 +71,23 @@ after_initialize do
     Discourse::Application.routes.append do
       mount ::DiscourseTopicDeadline::Engine, at: '/discourse-topic-deadline'
     end
+
+    category_ids = SiteSetting.deadline_allowed_on_categories.split('|').map(&:to_i)
+
+    topics = Topic.where(category_id: category_ids).where(closed: false)
+    topics = topics.select { |topic| !topic.custom_fields['deadline_timestamp'].blank? }
+    topics.each do |topic|
+        topic.custom_fields['deadline_timestamp'] =  topic.custom_fields['deadline_timestamp'].to_i
+    end
+    topics = topics.sort_by { |topic| topic.custom_fields['deadline_timestamp'] }.reverse
+    bump_days_threshold = SiteSetting.deadline_auto_bump_topic_threshold.day * 1000
+
+    now = Time.now.to_i
+    topics.each_with_index do |topic, index|
+        bump_time = now + index.seconds
+
+        puts '> topic: id:' + topic.id.to_s + ' timestamp: ' + topic.custom_fields['deadline_timestamp'].to_s + ' bumpt time: ' + bump_time.to_s
+        puts 'now: ' + now.to_s + ' time: ' + bump_time.to_s + ' threshold: ' + bump_days_threshold.to_s
+        # topic.update!(bumped_at: bump_time)
+    end
 end
