@@ -2,7 +2,7 @@
 
 # name: discourse-topic-deadline
 # about: Simple plugin to add a deadline to a topic
-# version: 0.1.0
+# version: 0.2.0
 # authors: Pavel Mudroch
 # url: https://github.com/pavelmudroch/discourse-topic-deadline
 
@@ -47,14 +47,15 @@ after_initialize do
     class DiscourseTopicDeadline::TopicsController < ::ApplicationController
 
         def update
-            if SiteSetting.allow_deadline_on_all_categories
-                unless guardian.can_edit?(topic)
-                    return render json: { error: 'You are not allowed to update this topic' }, status: 403
-                end
-            else
-                allowed_category_ids = SiteSetting.deadline_allowed_category_ids.split('|').map(&:to_i)
-                unless allowed_category_ids.include?(topic.category_id) && guardian.can_edit?(topic)
-                    return render json: { error: 'You are not allowed to update this topic' }, status: 403
+            unless guardian.can_edit?(topic)
+                return render json: { error: 'You are not allowed to update this topic' }, status: 403
+            end
+
+            unless SiteSettings.deadline_allowed_on_categories.empty?
+                allowed_category_ids = SiteSettings.deadline_allowed_on_categories.split('|').map(&:to_i)
+
+                unless allowed_category_ids.include?(topic.category_id)
+                    return render json: { error: 'Deadline plugin not enabled on this category'}, status: 500
                 end
             end
 

@@ -22,12 +22,17 @@ export default {
         TopicListItem.reopen({
             didInsertElement() {
                 this._super(...arguments);
-                if (
-                    !siteSettings.allowDeadlineOnAllCategories &&
-                    !siteSettings.allowDeadlineOnCategories.includes(
-                        this.topic.category_id,
-                    )
-                )
+                const category = this.topic.category_id;
+                const closed = this.topic.closed;
+                const solved = this.topic.has_accepted_answer === true;
+
+                if (!siteSettings.deadlineAllowedCategories.includes(category))
+                    return;
+
+                if (!siteSettings.deadlineDisplayOnClosedTopic && closed)
+                    return;
+
+                if (!siteSettings.deadlineDisplayOnSolvedTopic && solved)
                     return;
 
                 scheduleOnce('afterRender', this, this.addCustomElement);
