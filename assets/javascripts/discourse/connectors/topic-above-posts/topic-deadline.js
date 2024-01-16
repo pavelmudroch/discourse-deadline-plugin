@@ -36,6 +36,7 @@ export default class TopicDeadline extends Component {
     @service appEvents;
     @tracked deadlineFormatted;
     @tracked hasDeadline;
+    @tracked style;
     #topic;
     #timestamp;
     #remainingDays;
@@ -46,16 +47,6 @@ export default class TopicDeadline extends Component {
 
     get deadlineTimestamp() {
         return this.#timestamp;
-    }
-
-    get style() {
-        const className = getDeadlineRemainingDaysClass(
-            this.#remainingDays,
-            this.siteSettings.deadline_soon_days_threshold,
-        );
-        const { color, backgroundColor } =
-            getDeadlineColorsFromClassName(className);
-        return [color ?? '', backgroundColor ?? ''].join('');
     }
 
     get #deadlineFormatted() {
@@ -128,6 +119,13 @@ export default class TopicDeadline extends Component {
     updateDeadline() {
         this.deadlineFormatted = this.#deadlineFormatted;
         this.hasDeadline = this.#hasDeadline;
+        const className = getDeadlineRemainingDaysClass(
+            this.#remainingDays,
+            this.siteSettings.deadline_soon_days_threshold,
+        );
+        const { color, backgroundColor } =
+            getDeadlineColorsFromClassName(className);
+        this.style = [color ?? '', backgroundColor ?? ''].join('');
     }
 
     willDestroy() {

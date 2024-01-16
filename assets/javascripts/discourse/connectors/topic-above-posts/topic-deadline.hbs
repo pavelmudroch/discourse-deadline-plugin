@@ -1,36 +1,10 @@
-{{!-- {{#if this.shouldRender}}
-    <div>
-        {{#if this.hasDeadline}}
-            <DButton
-                style={{htmlSafe this.style}}
-                @icon='far-clock'
-                @class='deadline-button'
-                @label='deadline.change_button.label'
-                @title='deadline.change_button.title'
-                @action={{action this.setDeadline}}
-            >
-                <div class='button-content'>{{this.deadlineFormatted}}</div>
-            </DButton>
-        {{else}}
-            <DButton
-                style={{htmlSafe this.style}}
-                @icon='far-clock'
-                @class='deadline-button'
-                @label='deadline.set_button.label'
-                @title='deadline.set_button.title'
-                @action={{action this.setDeadline}}
-            />
-        {{/if}}
-    </div>
-{{/if}} --}}
-
 {{#if this.shouldRender}}
     {{#if this.hasDeadline}}
         <div
             class='deadline-button'
             {{on 'click' this.setDeadline}}
             title={{i18n 'deadline.change_button.title'}}
-            style={{this.style}}
+            style={{htmlSafe this.style}}
         >
             <svg><use href='#far-clock'></use></svg>
             <span class='content'>{{this.deadlineFormatted}}</span>
