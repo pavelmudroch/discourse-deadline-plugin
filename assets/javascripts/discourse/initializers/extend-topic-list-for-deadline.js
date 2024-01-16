@@ -9,7 +9,6 @@ import { getSiteSettings } from '../../lib/get-site-settings';
 export default {
     name: 'extend-topic-list-item',
     initialize() {
-        console.log('Initializer: Deadline - extend-topic-list-item');
         const siteSettings = withPluginApi('1.0.0', (api) =>
             getSiteSettings(api),
         );
@@ -20,7 +19,6 @@ export default {
 
         TopicListItem.reopen({
             didReceiveAttrs() {
-                console.log('TopicListItem didReceiveAttrs :: extending');
                 this._super(...arguments);
                 const category = this.topic.category_id;
                 const closed = this.topic.closed;
