@@ -22,3 +22,4 @@ en:
                 saving: 'Saving...'
                 action: 'Set Deadline'
                 action_error: 'Failed to set deadline'
+            navigation_label: 'Deadline'

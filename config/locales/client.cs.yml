@@ -22,3 +22,4 @@ cs:
                 saving: 'Ukládám...'
                 action: 'Nastavit Deadline'
                 action_error: 'Nepodařilo se nastavit deadline'
+            navigation_label: 'Deadline'
