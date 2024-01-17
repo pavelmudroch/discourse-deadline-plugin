@@ -35,6 +35,7 @@ export default class DeadlineNavItem extends Component {
             this.siteSettings.deadline_allowed_on_categories,
         );
 
+        console.log(allowedCategories, categoryId);
         if (allowedCategories !== null) {
             if (
                 !isFinite(categoryId) ||
@@ -51,13 +52,13 @@ export default class DeadlineNavItem extends Component {
         const urlParts = currentURL.split('/');
         this.activeClass = urlParts.at(-1) === DEADLINE_URL ? 'active' : '';
         const hasNavigationFilter = urlParts.at(-2) === 'l';
+        const searchParams = new URLSearchParams(currentSearchParams);
+        searchParams.set('status', 'closed');
 
         if (hasNavigationFilter) urlParts.splice(-1, 1, DEADLINE_URL);
         else urlParts.push('l', DEADLINE_URL);
-        this.deadlineURL =
-            urlParts.join('/') +
-            (currentSearchParams !== undefined
-                ? `?${currentSearchParams}`
-                : '');
+        this.deadlineURL = urlParts
+            .join('/')
+            .concat('?', searchParams.toString());
     }
 }
