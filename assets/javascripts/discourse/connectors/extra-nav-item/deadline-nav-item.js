@@ -31,6 +31,8 @@ export default class DeadlineNavItem extends Component {
         const categoryId = parseInt(
             currentRoute.params?.category_slug_path_with_id?.split('/').pop(),
         );
+        var global_site_settings = this.siteSettings;
+        console.log(this.siteSettings);
         const allowedCategories = getDeadlineAllowedCategories(
             this.siteSettings.deadline_allowed_on_categories,
         );
