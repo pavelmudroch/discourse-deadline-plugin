@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { getDeadlineAllowedCategories } from '../../../lib/get-deadline-allowed-categories';
 
-const DEADLINE_URL = 'deadline';
+const DEADLINE_URL = 'closest';
 
 export default class DeadlineNavItem extends Component {
     @service router;
@@ -31,13 +31,10 @@ export default class DeadlineNavItem extends Component {
         const categoryId = parseInt(
             currentRoute.params?.category_slug_path_with_id?.split('/').pop(),
         );
-        var global_site_settings = this.siteSettings;
-        console.log(this.siteSettings);
         const allowedCategories = getDeadlineAllowedCategories(
             this.siteSettings.deadline_allowed_on_categories,
         );
 
-        console.log(allowedCategories, categoryId);
         if (allowedCategories !== null) {
             if (
                 !isFinite(categoryId) ||
@@ -50,7 +47,7 @@ export default class DeadlineNavItem extends Component {
             }
         }
 
-        this.shouldRender = true;
+        // this.shouldRender = true;
         const urlParts = currentURL.split('/');
         this.activeClass = urlParts.at(-1) === DEADLINE_URL ? 'active' : '';
         const hasNavigationFilter = urlParts.at(-2) === 'l';
