@@ -28,6 +28,7 @@ export default {
                         category,
                     ) ?? true;
 
+                console.log({ categoryIncluded, closed, solved });
                 if (!categoryIncluded) return;
 
                 if (!siteSettings.deadlineDisplayOnClosedTopic && closed)
@@ -40,6 +41,7 @@ export default {
             },
 
             addCustomElement() {
+                console.log(this.topic.deadline_timestamp);
                 if (!this.topic.deadline_timestamp) return;
 
                 const deadlineTimestamp = parseInt(
