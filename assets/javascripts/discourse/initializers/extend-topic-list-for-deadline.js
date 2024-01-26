@@ -18,7 +18,7 @@ export default {
         }
 
         TopicListItem.reopen({
-            didReceiveAttrs() {
+            didRender() {
                 this._super(...arguments);
                 const category = this.topic.category_id;
                 const closed = this.topic.closed;
@@ -28,7 +28,6 @@ export default {
                         category,
                     ) ?? true;
 
-                console.log({ categoryIncluded, closed, solved });
                 if (!categoryIncluded) return;
 
                 if (!siteSettings.deadlineDisplayOnClosedTopic && closed)
@@ -37,12 +36,13 @@ export default {
                 if (!siteSettings.deadlineDisplayOnSolvedTopic && solved)
                     return;
 
-                scheduleOnce('afterRender', this, this.addCustomElement);
+                this.addCustomElement();
             },
 
             addCustomElement() {
-                console.log(this.topic.deadline_timestamp);
                 if (!this.topic.deadline_timestamp) return;
+                if (this.element.querySelector('span.topic-deadline-date'))
+                    return;
 
                 const deadlineTimestamp = parseInt(
                     this.topic.deadline_timestamp,
