@@ -22,4 +22,5 @@ en:
                 saving: 'Saving...'
                 action: 'Set Deadline'
                 action_error: 'Failed to set deadline'
+                cancel: 'Remove Deadline'
             navigation_label: 'Closest'

@@ -68,23 +68,7 @@ after_initialize do
         end
     end
 
-    # class ::ListController
-
-    #     def closest
-    #         puts "ListController#closest"
-    #         redirect_to '/c/general/4/l/latest.json?status=open'
-    #     end
-    # end
-
     Discourse::Application.routes.append do
       mount ::DiscourseTopicDeadline::Engine, at: '/discourse-topic-deadline'
     end
-
-    # Discourse::Application.routes.prepend do
-    #     get '/c/*category_slug/*category_id/l/closest.json' => 'list#closest'
-    # end
-
-    # Discourse::Application.routes.prepend do
-    #     get '/c/general/4/l/latest.json' => 'list#closest'
-    # end
 end

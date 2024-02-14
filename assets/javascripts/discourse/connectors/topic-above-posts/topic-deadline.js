@@ -51,7 +51,10 @@ export default class TopicDeadline extends Component {
 
     get #deadlineFormatted() {
         const timestamp = this.deadlineTimestamp;
-        if (timestamp === null) return I18n.t('deadline.change_button.error');
+        console.log('###', timestamp);
+
+        if (timestamp === null || timestamp === '')
+            return I18n.t('deadline.change_button.error');
 
         const timestampFormatted = new Date(timestamp).toLocaleDateString(
             I18n.t('deadline.date_locales'),
@@ -135,7 +138,10 @@ export default class TopicDeadline extends Component {
 
     #init(topic) {
         this.#topic = topic;
-        if (this.#topic.deadline_timestamp === null) {
+        if (
+            this.#topic.deadline_timestamp === null ||
+            this.#topic.deadline_timestamp === ''
+        ) {
             this.#timestamp = null;
             this.#remainingDays = null;
         } else {
@@ -148,5 +154,7 @@ export default class TopicDeadline extends Component {
         const topic = await ajax(`/t/${this.#topic.id}.json`);
         this.#init(topic);
         this.updateDeadline();
+        this.args.outletArgs.model.deadline_timestamp =
+            this.deadlineTimestamp?.toString() ?? '';
     }
 }

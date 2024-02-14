@@ -22,4 +22,5 @@ cs:
                 saving: 'Ukládám...'
                 action: 'Nastavit Deadline'
                 action_error: 'Nepodařilo se nastavit deadline'
+                cancel: 'Odebrat Deadline'
             navigation_label: 'Nejbližší'

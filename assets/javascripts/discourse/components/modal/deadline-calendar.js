@@ -1,9 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { next } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
-import DiscourseURL from 'discourse/lib/url';
 import I18n from 'discourse-i18n';
 import { ajax } from 'discourse/lib/ajax';
 import { inject as service } from '@ember/service';
@@ -14,12 +12,15 @@ export default class SetDeadline extends Component {
     @tracked saving = false;
     @tracked date = moment().format('YYYY-MM-DD');
     @tracked flash;
+    hasDeadline;
     #time = '23:59';
 
     constructor() {
         super(...arguments);
         const topic = this.args.model;
         const deadline = topic.deadline_timestamp;
+        console.log(deadline);
+        this.hasDeadline = deadline !== null && deadline !== '';
 
         if (deadline) this.#setCurrentDateTimeFromDeadline(deadline);
     }
@@ -51,7 +52,31 @@ export default class SetDeadline extends Component {
                     },
                 },
             });
-            // next(() => DiscourseURL.routeTo(topic.url));
+            this.appEvents.trigger('deadline:changed');
+            this.args.closeModal();
+        } catch (error) {
+            console.error(error);
+            this.flash = I18n.t('deadline.calendar.action_error');
+        } finally {
+            this.saving = false;
+        }
+    }
+
+    @action
+    async removeDeadline() {
+        const topic = this.args.model;
+        const datetime = null;
+
+        this.saving = true;
+        try {
+            await ajax(`/discourse-topic-deadline/topics/${topic.id}`, {
+                type: 'PUT',
+                data: {
+                    custom_fields: {
+                        deadline_timestamp: datetime,
+                    },
+                },
+            });
             this.appEvents.trigger('deadline:changed');
             this.args.closeModal();
         } catch (error) {

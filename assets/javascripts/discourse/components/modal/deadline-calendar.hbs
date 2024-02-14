@@ -31,5 +31,12 @@
                 'deadline.calendar.action'
             }}
         />
+        {{#if this.hasDeadline}}
+            <DButton
+                class='btn-danger'
+                @action={{this.removeDeadline}}
+                @label={{'deadline.calendar.cancel'}}
+            />
+        {{/if}}
     </:footer>
 </DModal>
