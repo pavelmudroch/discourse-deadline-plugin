@@ -19,7 +19,6 @@ export default class SetDeadline extends Component {
         super(...arguments);
         const topic = this.args.model;
         const deadline = topic.deadline_timestamp;
-        console.log(deadline);
         this.hasDeadline = deadline !== null && deadline !== '';
 
         if (deadline) this.#setCurrentDateTimeFromDeadline(deadline);

@@ -51,7 +51,6 @@ export default class TopicDeadline extends Component {
 
     get #deadlineFormatted() {
         const timestamp = this.deadlineTimestamp;
-        console.log('###', timestamp);
 
         if (timestamp === null || timestamp === '')
             return I18n.t('deadline.change_button.error');
@@ -106,6 +105,7 @@ export default class TopicDeadline extends Component {
     constructor() {
         super(...arguments);
 
+        this.appEvents.on('page:changed', this, this.#onPageChanged);
         this.appEvents.on('deadline:changed', this, this.#update);
         this.#init(this.args.outletArgs.model);
         this.updateDeadline();
@@ -132,8 +132,9 @@ export default class TopicDeadline extends Component {
     }
 
     willDestroy() {
-        super.willDestroy(...arguments);
         this.appEvents.off('deadline:changed', this, this.#update);
+        this.appEvents.off('page:changed', this, this.#onPageChanged);
+        super.willDestroy(...arguments);
     }
 
     #init(topic) {
@@ -156,5 +157,10 @@ export default class TopicDeadline extends Component {
         this.updateDeadline();
         this.args.outletArgs.model.deadline_timestamp =
             this.deadlineTimestamp?.toString() ?? '';
+    }
+
+    #onPageChanged() {
+        this.#init(this.args?.outletArgs?.model);
+        this.updateDeadline();
     }
 }
