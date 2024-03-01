@@ -37,6 +37,7 @@ export default class TopicDeadline extends Component {
     @tracked deadlineFormatted;
     @tracked hasDeadline;
     @tracked style;
+    @tracked shouldRender;
     #topic;
     #timestamp;
     #remainingDays;
@@ -78,30 +79,6 @@ export default class TopicDeadline extends Component {
         return this.deadlineTimestamp !== null;
     }
 
-    get shouldRender() {
-        const {
-            deadline_enabled: deadlineEnabled,
-            deadline_allowed_on_categories: deadlineAllowedOnCategories,
-            deadline_display_on_closed_topic: deadlineDisplayOnClosedTopic,
-            deadline_display_on_solved_topic: deadlineDisplayOnSolvedTopic,
-        } = this.siteSettings;
-        const categoryId = this.#topic.category_id;
-        const deadlineAllowedCategories = getDeadlineAllowedCategories(
-            deadlineAllowedOnCategories,
-        );
-        const closedTopicDisplayDeadline =
-            !this.#topic.closed || deadlineDisplayOnClosedTopic;
-        const solvedTopicDisplayDeadline =
-            !this.#topic.has_accepted_answer || deadlineDisplayOnSolvedTopic;
-
-        return (
-            deadlineEnabled &&
-            closedTopicDisplayDeadline &&
-            solvedTopicDisplayDeadline &&
-            (deadlineAllowedCategories?.includes(categoryId) ?? true)
-        );
-    }
-
     constructor() {
         super(...arguments);
 
@@ -120,6 +97,7 @@ export default class TopicDeadline extends Component {
     }
 
     updateDeadline() {
+        this.shouldRender = this.#shouldRender();
         this.deadlineFormatted = this.#deadlineFormatted;
         this.hasDeadline = this.#hasDeadline;
         const className = getDeadlineRemainingDaysClass(
@@ -162,5 +140,29 @@ export default class TopicDeadline extends Component {
     #onPageChanged() {
         this.#init(this.args?.outletArgs?.model);
         this.updateDeadline();
+    }
+
+    #shouldRender() {
+        const {
+            deadline_enabled: deadlineEnabled,
+            deadline_allowed_on_categories: deadlineAllowedOnCategories,
+            deadline_display_on_closed_topic: deadlineDisplayOnClosedTopic,
+            deadline_display_on_solved_topic: deadlineDisplayOnSolvedTopic,
+        } = this.siteSettings;
+        const categoryId = this.#topic.category_id;
+        const deadlineAllowedCategories = getDeadlineAllowedCategories(
+            deadlineAllowedOnCategories,
+        );
+        const closedTopicDisplayDeadline =
+            !this.#topic.closed || deadlineDisplayOnClosedTopic;
+        const solvedTopicDisplayDeadline =
+            !this.#topic.has_accepted_answer || deadlineDisplayOnSolvedTopic;
+
+        return (
+            deadlineEnabled &&
+            closedTopicDisplayDeadline &&
+            solvedTopicDisplayDeadline &&
+            (deadlineAllowedCategories?.includes(categoryId) ?? true)
+        );
     }
 }
