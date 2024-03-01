@@ -2,7 +2,7 @@
 
 # name: discourse-topic-deadline
 # about: Simple plugin to add a deadline to a topic
-# version: 0.4.0
+# version: 0.4.1
 # authors: Pavel Mudroch
 # url: https://github.com/pavelmudroch/discourse-topic-deadline
 
